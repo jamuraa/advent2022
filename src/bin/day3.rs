@@ -30,10 +30,13 @@ fn main() -> Result<()> {
         let second_set: HashSet<char> = second.chars().collect();
         let third_set: HashSet<char> = third.chars().collect();
 
-        let firstsecond: HashSet<char> = first_set.intersection(&second_set).copied().collect();
-        let intersection = firstsecond.intersection(&third_set).next().unwrap();
+        let intersection: char = first_set
+            .intersection(&second_set)
+            .find(|c| third_set.contains(c))
+            .unwrap()
+            .clone();
 
-        let priority = priority(*intersection);
+        let priority = priority(intersection);
         sum += priority;
 
         println!("{first} and {second} and {third} share {intersection:?} (pri {priority})");
