@@ -1,4 +1,4 @@
-use anyhow::{anyhow, Error};
+use color_eyre::{eyre::eyre, Report, Result};
 use std::fs::File;
 use std::io::{BufRead, BufReader};
 use std::str::FromStr;
@@ -11,16 +11,16 @@ enum Shape {
 }
 
 impl FromStr for Shape {
-    type Err = Error;
+    type Err = Report;
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         if s.len() != 1 {
-            return Err(anyhow!("Shapes are only one letter, not {}", s.len()));
+            return Err(eyre!("Shapes are only one letter, not {}", s.len()));
         }
         match s.chars().next().unwrap() {
             'A' | 'X' => Ok(Shape::Rock),
             'B' | 'Y' => Ok(Shape::Paper),
             'C' | 'Z' => Ok(Shape::Scissors),
-            _ => Err(anyhow!("Invalid shape string")),
+            _ => Err(eyre!("Invalid shape string")),
         }
     }
 }
@@ -43,16 +43,16 @@ impl GameResult {
 }
 
 impl FromStr for GameResult {
-    type Err = Error;
+    type Err = Report;
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         if s.len() != 1 {
-            return Err(anyhow!("Results are only one letter, not {}", s.len()));
+            return Err(eyre!("Results are only one letter, not {}", s.len()));
         }
         match s.chars().next().unwrap() {
             'X' => Ok(GameResult::Loss),
             'Y' => Ok(GameResult::Draw),
             'Z' => Ok(GameResult::Win),
-            _ => Err(anyhow!("Invalid result string")),
+            _ => Err(eyre!("Invalid result string")),
         }
     }
 }
@@ -99,7 +99,7 @@ impl Shape {
     }
 }
 
-fn main() -> Result<(), Error> {
+fn main() -> Result<()> {
     let file = BufReader::new(File::open("day2.txt")?);
 
     let mut total_score = 0;

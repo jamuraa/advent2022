@@ -1,4 +1,4 @@
-use anyhow::Error;
+use color_eyre::Result;
 use std::collections::HashSet;
 use std::fs::File;
 use std::io::{BufRead, BufReader};
@@ -11,7 +11,7 @@ fn priority(c: char) -> u32 {
     }
 }
 
-fn main() -> Result<(), Error> {
+fn main() -> Result<()> {
     let file = BufReader::new(File::open("day3.txt")?);
 
     let mut sum = 0;
